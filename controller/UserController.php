@@ -1,13 +1,10 @@
 <?php
 include "model/User.php";
-include "config/database.php";
 
 class UserController {
     private $userModel;
 
-    public function __construct() {
-        $database = new Database();
-        $db = $database->connect();
+    public function __construct($db) {
         $this->userModel = new User($db);
     }
     public function login($email, $password) {
@@ -16,7 +13,6 @@ class UserController {
 
         $loginData = $this->userModel->login();
         if ($loginData['status']) {
-            session_start();
             $_SESSION['is_logged_in'] = true;
             $_SESSION['username'] = $loginData['username'];
         } else {
@@ -29,7 +25,6 @@ class UserController {
     }
 
     public function logout() {
-        session_start();
         $_SESSION = [];
         session_destroy();
         setcookie('PHPSESSID', '', time() - 3600, '/');
@@ -68,12 +63,6 @@ class UserController {
     }
 
     public function index() {
-        // check if user is logged in, if not redirect to login page an extra check for username to prevent session issues
-        if (!isset($_SESSION["is_logged_in"]) && !isset($_SESSION["username"])) {
-            header("Location:".$_SERVER['PHP_SELF']);
-            exit;
-        }
-
         include "view/Auth.php";
     }
 }

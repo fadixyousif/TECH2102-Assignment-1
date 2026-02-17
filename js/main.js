@@ -8,16 +8,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (showRegister && loginForm && registerForm) {
         showRegister.addEventListener('click', () => {
-            loginForm.style.display = 'none';
-            registerForm.style.display = 'block';
+            loginForm.classList.add('hidden');
+            registerForm.classList.remove('hidden');
             authTitle.innerText = 'Create an account to access student information';
         });
     }
 
     if (showLogin && loginForm && registerForm) {
         showLogin.addEventListener('click', () => {
-            registerForm.style.display = 'none';
-            loginForm.style.display = 'block';
+            registerForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
             authTitle.innerText = 'Welcome, please login to view student information';
         });
     }
@@ -28,15 +28,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeBtn = document.querySelector('.close-btn');
 
     if (openBtn && modal) {
-        openBtn.onclick = () => modal.style.display = 'flex';
+        openBtn.onclick = () => modal.classList.add('flex-modal');
     }
 
     if (closeBtn && modal) {
-        closeBtn.onclick = () => modal.style.display = 'none';
+        closeBtn.onclick = () => modal.classList.remove('flex-modal');
     }
 
     window.onclick = (e) => {
-        if (e.target == modal) modal.style.display = 'none';
+        if (e.target == modal) modal.classList.remove('flex-modal');
     }
 
     // Auto-hide Alerts

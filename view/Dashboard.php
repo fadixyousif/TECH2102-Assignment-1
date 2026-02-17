@@ -1,47 +1,26 @@
 <?php
 include "partials/header.php";
-
-$students = [
-    ["id" => 1, "name" => "John Doe", "email" => "john@example.com"],
-    ["id" => 2, "name" => "Jane Smith", "email" => "jane@example.com"],
-    ["id" => 3, "name" => "Bob Johnson", "email" => "bob@example.com"],
-    ["id" => 4, "name" => "Alice Williams", "email" => "alice@example.com"],
-    ["id" => 5, "name" => "Charlie Brown", "email" => "charlie@example.com"],
-    ["id" => 6, "name" => "Diana Prince", "email" => "diana@example.com"],
-    ["id" => 7, "name" => "Ethan Hunt", "email" => "ethan@example.com"],
-    ["id" => 8, "name" => "Fiona Green", "email" => "fiona@example.com"],
-    ["id" => 9, "name" => "Grace Lee", "email" => "grace@example.com"],
-    ["id" => 10, "name" => "Henry Davis", "email" => "henry@example.com"],
-    ["id" => 11, "name" => "Ivy Chen", "email" => "ivy@example.com"],
-    ["id" => 12, "name" => "Jack Wilson", "email" => "jack@example.com"],
-    ["id" => 13, "name" => "Kevin White", "email" => "kevin@example.com"],
-    ["id" => 14, "name" => "Lily Black", "email" => "lily@example.com"],
-    ["id" => 1, "name" => "John Doe", "email" => "john@example.com"],
-    ["id" => 2, "name" => "Jane Smith", "email" => "jane@example.com"],
-    ["id" => 3, "name" => "Bob Johnson", "email" => "bob@example.com"],
-    ["id" => 4, "name" => "Alice Williams", "email" => "alice@example.com"],
-    ["id" => 5, "name" => "Charlie Brown", "email" => "charlie@example.com"],
-    ["id" => 6, "name" => "Diana Prince", "email" => "diana@example.com"],
-    ["id" => 7, "name" => "Ethan Hunt", "email" => "ethan@example.com"],
-    ["id" => 8, "name" => "Fiona Green", "email" => "fiona@example.com"],
-    ["id" => 9, "name" => "Grace Lee", "email" => "grace@example.com"],
-    ["id" => 10, "name" => "Henry Davis", "email" => "henry@example.com"],
-    ["id" => 11, "name" => "Ivy Chen", "email" => "ivy@example.com"],
-    ["id" => 12, "name" => "Jack Wilson", "email" => "jack@example.com"],
-    ["id" => 13, "name" => "Kevin White", "email" => "kevin@example.com"],
-    ["id" => 14, "name" => "Lily Black", "email" => "lily@example.com"]
-];
 ?>
 
 <div class="dashboard-container">
     <div class="dashboard-header">
         <h1>Student Records</h1>
-        <div style="display: flex; gap: 10px;">
+        <div class="header-actions">
             <button id="open-modal" class="add-btn">Add New Student</button>
-            <form action="index.php" method="POST" style="margin: 0;">
-                <button type="submit" name="auth-logout" class="add-btn" style="background-color: #dc3545;">Logout</button>
+            <form action="index.php" method="POST" class="inline-form">
+                <button type="submit" name="auth-logout" class="add-btn btn-logout">Logout</button>
             </form>
         </div>
+    </div>
+
+    <div class="search-container">
+        <form action="index.php" method="GET" class="search-form">
+            <input type="text" name="search" class="search-input" placeholder="Search by name or email..." value="<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>">
+            <button type="submit" class="add-btn btn-search">Search</button>
+            <?php if(isset($_GET['search'])): ?>
+                <a href="index.php" class="btn-clear">Clear</a>
+            <?php endif; ?>
+        </form>
     </div>
 
     <div class="table-container">
@@ -55,16 +34,25 @@ $students = [
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($students as $student): ?>
+                <?php if (empty($students)): ?>
                     <tr>
-                        <td><?php echo $student["id"]; ?></td>
-                        <td><?php echo $student["name"]; ?></td>
-                        <td><?php echo $student["email"]; ?></td>
-                        <td>
-                            <button class="delete-link">Delete</button>
-                        </td>
+                        <td colspan="4" class="text-center">No students found.</td>
                     </tr>
-                <?php endforeach; ?>
+                <?php else: ?>
+                    <?php foreach ($students as $student): ?>
+                        <tr>
+                            <td><?php echo $student["id"]; ?></td>
+                            <td><?php echo $student["name"]; ?></td>
+                            <td><?php echo $student["email"]; ?></td>
+                            <td>
+                                <form action="index.php" method="POST" class="inline-form">
+                                    <input type="hidden" name="id" value="<?php echo $student['id']; ?>">
+                                    <button type="submit" name="delete-student" class="delete-link" onclick="return confirm('Are you sure you want to delete this student?')">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>

@@ -23,7 +23,7 @@ include "partials/header.php";
         </form>
 
         <!-- Register Form (Hidden by default) -->
-        <form id="register-form" method="POST" style="display: none;">
+        <form id="register-form" method="POST" class="hidden">
             <div class="form-group">
                 <label for="reg-username">Username</label>
                 <input type="text" id="reg-username" name="username" required>
