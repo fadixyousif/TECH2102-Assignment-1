@@ -61,7 +61,6 @@ $students = [
                         <td><?php echo $student["name"]; ?></td>
                         <td><?php echo $student["email"]; ?></td>
                         <td>
-                            <button class="edit-link">Edit</button>
                             <button class="delete-link">Delete</button>
                         </td>
                     </tr>
