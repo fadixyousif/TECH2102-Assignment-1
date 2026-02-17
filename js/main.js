@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const showRegister = document.getElementById('show-register');
     const showLogin = document.getElementById('show-login');
 
+    /* 
+        Event listeners for switching between login and registration forms.
+    */
     if (showRegister && loginForm && registerForm) {
         showRegister.addEventListener('click', () => {
             loginForm.classList.add('hidden');
@@ -14,6 +17,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    /* 
+        Event listener for switching back to the login form from the registration form.
+    */
     if (showLogin && loginForm && registerForm) {
         showLogin.addEventListener('click', () => {
             registerForm.classList.add('hidden');
@@ -27,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const openBtn = document.getElementById('open-modal');
     const closeBtn = document.querySelector('.close-btn');
 
+    // Event listeners for opening and closing the student information modal, as well as closing the modal when clicking outside of it.
     if (openBtn && modal) {
         openBtn.onclick = () => modal.classList.add('flex-modal');
     }
@@ -35,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
         closeBtn.onclick = () => modal.classList.remove('flex-modal');
     }
 
+    // Event listener to close the modal when clicking outside of it
     window.onclick = (e) => {
         if (e.target == modal) modal.classList.remove('flex-modal');
     }

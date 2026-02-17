@@ -2,6 +2,7 @@
 include "partials/header.php";
 ?>
 
+<!-- Dashboard view for displaying student records -->
 <div class="dashboard-container">
     <div class="dashboard-header">
         <h1>Student Records</h1>
@@ -13,6 +14,10 @@ include "partials/header.php";
         </div>
     </div>
 
+    <!-- Display success or error messages -->
+    <?php include "partials/message.php"; ?>
+
+    <!-- Search form for filtering students by name or email -->
     <div class="search-container">
         <form action="index.php" method="GET" class="search-form">
             <input type="text" name="search" class="search-input" placeholder="Search by name or email..." value="<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>">
@@ -23,8 +28,10 @@ include "partials/header.php";
         </form>
     </div>
 
+    <!-- Student records table -->
     <div class="table-container">
         <table>
+            <!-- Table headers for student records -->
             <thead>
                 <tr>
                     <th>ID</th>
@@ -33,6 +40,8 @@ include "partials/header.php";
                     <th>Actions</th>
                 </tr>
             </thead>
+
+            <!-- Table body to display student records, with options to delete each record -->
             <tbody>
                 <?php if (empty($students)): ?>
                     <tr>
@@ -45,6 +54,7 @@ include "partials/header.php";
                             <td><?php echo $student["name"]; ?></td>
                             <td><?php echo $student["email"]; ?></td>
                             <td>
+                                <!-- Delete button to remove students from database -->
                                 <form action="index.php" method="POST" class="inline-form">
                                     <input type="hidden" name="id" value="<?php echo $student['id']; ?>">
                                     <button type="submit" name="delete-student" class="delete-link" onclick="return confirm('Are you sure you want to delete this student?')">Delete</button>
@@ -58,6 +68,7 @@ include "partials/header.php";
     </div>
 </div>
 
+<!-- Modal for adding new student records -->
 <div id="student-modal" class="modal">
     <div class="modal-content">
         <span class="close-btn">&times;</span>

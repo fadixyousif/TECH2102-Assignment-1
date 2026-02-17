@@ -2,11 +2,22 @@
 include "model/User.php";
 
 class UserController {
+    // Property to hold the instance of the User model for database interactions related to user authentication and registration
     private $userModel;
 
+    /*
+        Constructor to initialize the User model with the provided database connection, 
+        allowing the controller to perform operations such as user login, logout, and registration through the model's methods
+    */
     public function __construct($db) {
         $this->userModel = new User($db);
     }
+
+    /* 
+        login method to handle user login, verifying email and password against the database, 
+        setting session variables for logged-in users and handling error messages for failed login attempts, 
+        with a redirect back to the login page after processing the login request
+    */
     public function login($email, $password) {
         $this->userModel->email = $email;
         $this->userModel->password = $password;
@@ -24,6 +35,10 @@ class UserController {
         exit;
     }
 
+    /* 
+        logout method to handle user logout, clearing session variables and destroying the session, 
+        with a redirect back to the login page after processing the logout request
+    */
     public function logout() {
         $_SESSION = [];
         session_destroy();
@@ -32,6 +47,12 @@ class UserController {
         exit;
     }
 
+    /* 
+        register method to handle user registration, inserting a new user record into the database, 
+        with checks to ensure that passwords match and that duplicate emails or usernames are not allowed, 
+        setting session variables for newly registered users and handling error messages for failed registration attempts, 
+        with a redirect back to the registration page after processing the registration request
+    */
     public function register($username, $email, $password, $confirm_password) {
         $this->userModel->user = $username;
         $this->userModel->email = $email;
@@ -62,6 +83,11 @@ class UserController {
         exit;
     }
 
+    /* 
+        index method to display the authentication page, 
+        checking if the user is already logged in and redirecting to the dashboard if they are, 
+        or including the authentication view if they are not logged in
+    */
     public function index() {
         include "view/Auth.php";
     }

@@ -2,10 +2,13 @@
 include "partials/header.php";
 ?>
 
+<!-- Authentication view for login and registration -->
 <div class="auth-container">
     <div class="auth-box">
+        <!-- Title and message display for authentication page -->
         <h2 id="auth-title">Welcome, please login to view student information</h2>
         
+        <!-- Display success or error messages -->
         <?php include "partials/message.php"; ?>
 
         <!-- Login Form -->
