@@ -10,8 +10,8 @@ class UserController {
         $db = $database->connect();
         $this->userModel = new User($db);
     }
-    public function login($username, $password) {
-        $this->userModel->user = $username;
+    public function login($email, $password) {
+        $this->userModel->email = $email;
         $this->userModel->password = $password;
 
         $loginData = $this->userModel->login();
@@ -21,8 +21,11 @@ class UserController {
             $_SESSION['username'] = $loginData['username'];
         } else {
             // Placeholder error handling for login failure (not yet implemented)
-            //$_SESSION['error'] = $loginData['error'];
+            $_SESSION['error'] = $loginData['error'];
         }
+
+        header("Location:".$_SERVER['PHP_SELF']);
+        exit;
     }
 
     public function logout() {
@@ -30,7 +33,7 @@ class UserController {
         $_SESSION = [];
         session_destroy();
         setcookie('PHPSESSID', '', time() - 3600, '/');
-        header('Location: index.php');
+        header("Location:".$_SERVER['PHP_SELF']);
         exit;
     }
 
@@ -39,7 +42,10 @@ class UserController {
         $this->userModel->email = $email;
         
         if ($password !== $confirm_password) {
-            // Placeholder error handling for password mismatch (not yet implemented)
+            $_SESSION['error'] = "Passwords do not match.";
+
+            header("Location:".$_SERVER['PHP_SELF']);
+            exit;
         }
 
         if(!$this->userModel->isUserExists()) {
@@ -49,11 +55,12 @@ class UserController {
             if ($this->userModel->register()) {
                 $_SESSION['is_logged_in'] = true;
                 $_SESSION['username'] = $username;
+                $_SESSION['success'] = "Registration successful. You are now logged in.";
             } else {
-                // Placeholder error handling for registration failure (not yet implemented)
+                $_SESSION['error'] = "Registration failed. Please try again.";
             } 
         } else {
-            // Placeholder error handling for existing user (not yet implemented)
+            $_SESSION['error'] = "Email or username already exists. Please use a different email or username.";
         }
         
         header("Location:".$_SERVER['PHP_SELF']);
@@ -61,7 +68,12 @@ class UserController {
     }
 
     public function index() {
-        // Implement logic to display the authentication page
+        // check if user is logged in, if not redirect to login page an extra check for username to prevent session issues
+        if (!isset($_SESSION["is_logged_in"]) && !isset($_SESSION["username"])) {
+            header("Location:".$_SERVER['PHP_SELF']);
+            exit;
+        }
+
         include "view/Auth.php";
     }
 }

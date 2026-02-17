@@ -45,7 +45,7 @@ class User {
     }
 
     public function isUserExists() {
-        $query = "SELECT * FROM users WHERE email = '$this->email'";
+        $query = "SELECT * FROM users WHERE email = '$this->email' OR username = '$this->user' LIMIT 1";
         $result = $this->conn->query($query);
         return mysqli_num_rows($result) > 0;
     }
